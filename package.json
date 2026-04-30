@@ -1,0 +1,25 @@
+{
+  "name": "examnotes-ai-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack AI-powered exam preparation platform.",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Run client and server separately for now",
+    "client": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "keywords": [
+    "ai",
+    "notes",
+    "exam",
+    "gemini",
+    "mern",
+    "education"
+  ],
+  "license": "MIT"
+}
