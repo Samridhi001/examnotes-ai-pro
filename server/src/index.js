@@ -5,6 +5,8 @@ import { env } from "./config/env.js";
 import healthRouter from "./routes/health.routes.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { connectDatabase } from "./config/database.js";
+
 
 
 
@@ -29,6 +31,8 @@ app.use("/api/health", healthRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`ExamNotesAI Pro API running on http://localhost:${PORT}`);
+  await connectDatabase();
 });
+
