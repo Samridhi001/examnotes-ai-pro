@@ -1,17 +1,18 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import { env } from "./config/env.js";
 import healthRouter from "./routes/health.routes.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
-dotenv.config();
+
 
 const app = express();
 
-const PORT = process.env.PORT || 8000;
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+const PORT = env.port;
+const CLIENT_URL = env.clientUrl;
+
 
 app.use(
   cors({
