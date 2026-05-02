@@ -1,7 +1,15 @@
-export function errorHandler(error, req, res, next) {
-  console.error(error);
+import { isProduction } from "../config/env.js";
 
-  res.status(error.statusCode || 500).json({
-    message: error.message || "Internal server error"
+export function errorHandler(error, req, res, next) {
+  const statusCode = error.statusCode || 500;
+
+  if (!error.isOperational) {
+    console.error(error);
+  }
+
+  res.status(statusCode).json({
+    success: false,
+    message: error.message || "Internal server error",
+    ...(isProduction() ? {} : { stack: error.stack })
   });
 }

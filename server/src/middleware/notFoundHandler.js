@@ -1,5 +1,5 @@
-export function notFoundHandler(req, res) {
-  res.status(404).json({
-    message: `Route not found: ${req.method} ${req.originalUrl}`
-  });
+import { AppError } from "../utils/AppError.js";
+
+export function notFoundHandler(req, res, next) {
+  next(new AppError(`Route not found: ${req.method} ${req.originalUrl}`, 404));
 }
