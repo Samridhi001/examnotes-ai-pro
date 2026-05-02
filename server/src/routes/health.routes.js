@@ -1,13 +1,18 @@
 import { Router } from "express";
+import { sendSuccess } from "../utils/apiResponse.js";
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  res.json({
-    status: "ok",
-    app: "ExamNotesAI Pro",
-    message: "API is healthy"
-  });
+  return sendSuccess(
+    res,
+    {
+      app: "ExamNotesAI Pro",
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString()
+    },
+    "API is healthy"
+  );
 });
 
 export default router;
