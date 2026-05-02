@@ -20,3 +20,6 @@ The goal is to help students generate high-quality exam notes, revision material
 
 See [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md) for the current product milestones.
 
+## Backend Setup
+
+See [docs/BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for backend setup notes.
