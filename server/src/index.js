@@ -6,6 +6,8 @@ import healthRouter from "./routes/health.routes.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { connectDatabase } from "./config/database.js";
+import authRouter from "./routes/auth.routes.js";
+
 
 
 
@@ -27,6 +29,8 @@ app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
 app.use("/api/health", healthRouter);
+app.use("/api/auth", authRouter);
+
 
 app.use(notFoundHandler);
 app.use(errorHandler);
