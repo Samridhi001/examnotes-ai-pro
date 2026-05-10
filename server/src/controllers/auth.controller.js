@@ -2,7 +2,7 @@ import { User } from "../models/User.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { AppError } from "../utils/AppError.js";
 import { sendCreated, sendSuccess } from "../utils/apiResponse.js";
-import { createAuthToken, setAuthCookie } from "../utils/token.js";
+import { clearAuthCookie, createAuthToken, setAuthCookie } from "../utils/token.js";
 import { validateLoginInput, validateRegisterInput } from "../validators/auth.validator.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
@@ -58,4 +58,25 @@ export const loginUser = asyncHandler(async (req, res) => {
     "Logged in successfully"
   );
 });
+
+export const getCurrentUser = asyncHandler(async (req, res) => {
+  return sendSuccess(
+    res,
+    {
+      user: req.user.toPublicJSON()
+    },
+    "Current user fetched successfully"
+  );
+});
+
+export const logoutUser = asyncHandler(async (req, res) => {
+  clearAuthCookie(res);
+
+  return sendSuccess(
+    res,
+    {},
+    "Logged out successfully"
+  );
+});
+
 
