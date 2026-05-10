@@ -23,3 +23,7 @@ See [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md) for the current product milesto
 ## Backend Setup
 
 See [docs/BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for backend setup notes.
+
+## Auth API
+
+See [docs/AUTH_API.md](docs/AUTH_API.md) for authentication endpoint notes.
