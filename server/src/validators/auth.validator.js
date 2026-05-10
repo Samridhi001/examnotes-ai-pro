@@ -37,3 +37,25 @@ export function validateRegisterInput({ name, email, password }) {
     password: normalizedPassword
   };
 }
+
+export function validateLoginInput({ email, password }) {
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const normalizedPassword = String(password || "");
+
+  if (!normalizedEmail) {
+    throw new AppError("Email is required", 400);
+  }
+
+  if (!emailPattern.test(normalizedEmail)) {
+    throw new AppError("Please provide a valid email address", 400);
+  }
+
+  if (!normalizedPassword) {
+    throw new AppError("Password is required", 400);
+  }
+
+  return {
+    email: normalizedEmail,
+    password: normalizedPassword
+  };
+}
