@@ -1,7 +1,18 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
+import { AuthPage } from "./pages/AuthPage.jsx";
 import "./App.css";
 
 function App() {
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
+
+  async function handleLogout() {
+    await logout();
+    navigate("/");
+  }
+
   return (
     <div className="app-shell">
       <header className="top-nav">
@@ -14,13 +25,43 @@ function App() {
           <Link to="/notes">Notes</Link>
           <Link to="/history">History</Link>
           <Link to="/pricing">Pricing</Link>
+
+          {isAuthenticated ? (
+            <button className="nav-button" type="button" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <Link to="/auth">Login</Link>
+          )}
         </nav>
       </header>
 
+      {isAuthenticated && (
+        <div className="user-strip">
+          Logged in as <strong>{user.name}</strong> | Credits:{" "}
+          <strong>{user.credits}</strong>
+        </div>
+      )}
+
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/notes" element={<NotesPage />} />
-        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route
+          path="/notes"
+          element={
+            <ProtectedRoute>
+              <NotesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/pricing" element={<PricingPage />} />
       </Routes>
     </div>
@@ -75,7 +116,7 @@ function HistoryPage() {
   return (
     <main className="page-panel">
       <h1>History</h1>
-      <p>Saved notes history will appear here after authentication is added.</p>
+      <p>Saved notes history will appear here after notes generation is added.</p>
     </main>
   );
 }
