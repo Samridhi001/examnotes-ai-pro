@@ -27,3 +27,7 @@ See [docs/BACKEND_SETUP.md](docs/BACKEND_SETUP.md) for backend setup notes.
 ## Auth API
 
 See [docs/AUTH_API.md](docs/AUTH_API.md) for authentication endpoint notes.
+
+## Frontend Auth
+
+See [docs/FRONTEND_AUTH.md](docs/FRONTEND_AUTH.md) for frontend authentication flow.
