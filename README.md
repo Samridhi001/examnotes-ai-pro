@@ -31,3 +31,7 @@ See [docs/AUTH_API.md](docs/AUTH_API.md) for authentication endpoint notes.
 ## Frontend Auth
 
 See [docs/FRONTEND_AUTH.md](docs/FRONTEND_AUTH.md) for frontend authentication flow.
+
+## Frontend Notes
+
+See [docs/FRONTEND_NOTES.md](docs/FRONTEND_NOTES.md) for the notes workspace flow.
