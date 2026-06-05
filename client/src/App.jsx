@@ -1,9 +1,10 @@
+import { NotesPage } from "./pages/NotesPage.jsx";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { AuthPage } from "./pages/AuthPage.jsx";
 import "./App.css";
-import { NotesPage } from "./pages/NotesPage.jsx";
+
 
 function App() {
   const navigate = useNavigate();
@@ -100,15 +101,6 @@ function HomePage() {
           <li>Credits and Stripe payments</li>
         </ul>
       </aside>
-    </main>
-  );
-}
-
-function NotesPage() {
-  return (
-    <main className="page-panel">
-      <h1>Generate Notes</h1>
-      <p>The AI notes workspace will be built in a later milestone.</p>
     </main>
   );
 }
