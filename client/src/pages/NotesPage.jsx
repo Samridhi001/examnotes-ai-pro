@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getApiErrorMessage } from "../services/apiClient";
-import { generateNotes } from "../services/notesApi";
+import {
+  deleteNote,
+  generateNotes,
+  getNoteById,
+  getNotesHistory
+} from "../services/notesApi";
 
 const initialForm = {
   topic: "",
@@ -15,9 +20,28 @@ const initialForm = {
 export function NotesPage() {
   const [form, setForm] = useState(initialForm);
   const [note, setNote] = useState(null);
+  const [history, setHistory] = useState([]);
   const [status, setStatus] = useState("Generate your first AI-ready study note.");
   const [error, setError] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+
+  async function loadHistory() {
+    setIsHistoryLoading(true);
+
+    try {
+      const response = await getNotesHistory();
+      setHistory(response.data.notes);
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+    } finally {
+      setIsHistoryLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadHistory();
+  }, []);
 
   function updateField(event) {
     const { name, value, type, checked } = event.target;
@@ -44,11 +68,45 @@ export function NotesPage() {
 
       setNote(response.data.note);
       setStatus("Notes generated and saved successfully.");
+      await loadHistory();
     } catch (requestError) {
       setError(getApiErrorMessage(requestError));
       setStatus("Could not generate notes.");
     } finally {
       setIsGenerating(false);
+    }
+  }
+
+  async function handleLoadNote(noteId) {
+    setError("");
+    setStatus("Loading saved note...");
+
+    try {
+      const response = await getNoteById(noteId);
+      setNote(response.data.note);
+      setStatus("Saved note loaded.");
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+      setStatus("Could not load note.");
+    }
+  }
+
+  async function handleDeleteNote(noteId) {
+    setError("");
+    setStatus("Deleting note...");
+
+    try {
+      await deleteNote(noteId);
+
+      if (note?._id === noteId) {
+        setNote(null);
+      }
+
+      await loadHistory();
+      setStatus("Note deleted.");
+    } catch (requestError) {
+      setError(getApiErrorMessage(requestError));
+      setStatus("Could not delete note.");
     }
   }
 
@@ -143,6 +201,13 @@ export function NotesPage() {
             {isGenerating ? "Generating..." : "Generate Notes"}
           </button>
         </form>
+
+        <HistoryPanel
+          history={history}
+          isLoading={isHistoryLoading}
+          onLoad={handleLoadNote}
+          onDelete={handleDeleteNote}
+        />
       </section>
 
       <section className="notes-result-panel">
@@ -150,6 +215,47 @@ export function NotesPage() {
         {note ? <NoteResult note={note} /> : <EmptyResult />}
       </section>
     </main>
+  );
+}
+
+function HistoryPanel({ history, isLoading, onLoad, onDelete }) {
+  return (
+    <section className="history-panel">
+      <div className="history-header">
+        <h2>Saved Notes</h2>
+        <span>{isLoading ? "Loading..." : `${history.length} saved`}</span>
+      </div>
+
+      {history.length === 0 ? (
+        <p className="history-empty">No saved notes yet.</p>
+      ) : (
+        <div className="history-list">
+          {history.map((item) => (
+            <article className="history-item" key={item._id}>
+              <div>
+                <h3>{item.topic}</h3>
+                <p>
+                  {item.classLevel} | {item.examType}
+                </p>
+              </div>
+
+              <div className="history-actions">
+                <button type="button" onClick={() => onLoad(item._id)}>
+                  Open
+                </button>
+                <button
+                  className="danger-button"
+                  type="button"
+                  onClick={() => onDelete(item._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
