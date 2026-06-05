@@ -3,6 +3,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { AuthPage } from "./pages/AuthPage.jsx";
 import "./App.css";
+import { NotesPage } from "./pages/NotesPage.jsx";
 
 function App() {
   const navigate = useNavigate();
