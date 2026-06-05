@@ -147,17 +147,115 @@ export function NotesPage() {
 
       <section className="notes-result-panel">
         <p className="status-text">{status}</p>
-        {note ? (
-          <pre className="raw-note-preview">
-            {JSON.stringify(note.content, null, 2)}
-          </pre>
-        ) : (
-          <div className="empty-state">
-            <h2>No notes generated yet</h2>
-            <p>Your generated output will appear here.</p>
-          </div>
-        )}
+        {note ? <NoteResult note={note} /> : <EmptyResult />}
       </section>
     </main>
+  );
+}
+
+function EmptyResult() {
+  return (
+    <div className="empty-state">
+      <h2>No notes generated yet</h2>
+      <p>Your generated output will appear here.</p>
+    </div>
+  );
+}
+
+function NoteResult({ note }) {
+  const { content } = note;
+
+  return (
+    <article className="note-result">
+      <div className="note-result-header">
+        <div>
+          <p className="eyebrow">Generated Note</p>
+          <h2>{note.topic}</h2>
+          <p>
+            {note.classLevel} | {note.examType} | {note.generationProvider}
+          </p>
+        </div>
+      </div>
+
+      <section className="note-section">
+        <h3>Summary</h3>
+        <p>{content.summary}</p>
+      </section>
+
+      <section className="note-section">
+        <h3>Key Points</h3>
+        <ul>
+          {content.keyPoints.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="note-section">
+        <h3>Revision Checklist</h3>
+        <ul>
+          {content.revisionChecklist.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="note-section">
+        <h3>Important Questions</h3>
+        <p className="subheading">Short Questions</p>
+        <ul>
+          {content.importantQuestions.short.map((question) => (
+            <li key={question}>{question}</li>
+          ))}
+        </ul>
+
+        <p className="subheading">Long Questions</p>
+        <ul>
+          {content.importantQuestions.long.map((question) => (
+            <li key={question}>{question}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="note-section">
+        <h3>Flashcards</h3>
+        <div className="card-grid">
+          {content.flashcards.map((card) => (
+            <div className="study-card" key={card.front}>
+              <strong>{card.front}</strong>
+              <p>{card.back}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="note-section">
+        <h3>Quiz</h3>
+        <div className="card-grid">
+          {content.quiz.map((item) => (
+            <div className="study-card" key={item.question}>
+              <strong>{item.question}</strong>
+              <p>{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {content.diagram && (
+        <section className="note-section">
+          <h3>Diagram Draft</h3>
+          <pre className="diagram-preview">{content.diagram}</pre>
+        </section>
+      )}
+
+      {content.charts.length > 0 && (
+        <section className="note-section">
+          <h3>Chart Data</h3>
+          <pre className="diagram-preview">
+            {JSON.stringify(content.charts, null, 2)}
+          </pre>
+        </section>
+      )}
+    </article>
   );
 }

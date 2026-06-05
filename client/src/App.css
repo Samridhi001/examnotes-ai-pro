@@ -249,3 +249,165 @@
   margin-top: 10px;
   text-decoration: none;
 }
+
+.notes-workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+  gap: 24px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 34px 24px;
+}
+
+.notes-form-panel,
+.notes-result-panel {
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+  padding: 26px;
+}
+
+.section-copy,
+.status-text {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.notes-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.notes-form label {
+  display: grid;
+  gap: 7px;
+  color: #374151;
+  font-weight: 700;
+}
+
+.notes-form input,
+.notes-form textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  padding: 12px 13px;
+}
+
+.notes-form textarea {
+  resize: vertical;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.toggle-row {
+  display: grid;
+  gap: 10px;
+}
+
+.toggle-row label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+}
+
+.toggle-row input {
+  width: auto;
+}
+
+.notes-form button {
+  border: 0;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  padding: 12px 14px;
+}
+
+.notes-form button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.empty-state {
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  color: #4b5563;
+  padding: 30px;
+  text-align: center;
+}
+
+.note-result-header {
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+}
+
+.note-result-header h2 {
+  margin: 0;
+}
+
+.note-section {
+  border-top: 1px solid #edf1f7;
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.note-section h3 {
+  margin: 0 0 10px;
+}
+
+.note-section li {
+  margin-bottom: 8px;
+}
+
+.subheading {
+  color: #374151;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.card-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.study-card {
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+  background: #f9fafb;
+  padding: 14px;
+}
+
+.study-card p {
+  color: #4b5563;
+  margin-bottom: 0;
+}
+
+.diagram-preview {
+  background: #111827;
+  border-radius: 8px;
+  color: #e5e7eb;
+  overflow: auto;
+  padding: 14px;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .notes-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
