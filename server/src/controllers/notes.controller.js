@@ -1,5 +1,5 @@
 import { Note } from "../models/Note.js";
-import { generateFallbackNotes } from "../services/fallbackNotes.service.js";
+import { generateNotesContent } from "../services/notesGeneration.service.js";
 import { AppError } from "../utils/AppError.js";
 import { sendCreated, sendSuccess } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -7,14 +7,14 @@ import { validateGenerateNotesInput } from "../validators/note.validator.js";
 
 export const generateNotes = asyncHandler(async (req, res) => {
   const input = validateGenerateNotesInput(req.body);
-  const content = generateFallbackNotes(input);
+  const generated = await generateNotesContent(input);
 
-  const note = await Note.create({
-    user: req.userId,
-    ...input,
-    generationProvider: "fallback",
-    content
-  });
+const note = await Note.create({
+  user: req.userId,
+  ...input,
+  generationProvider: generated.provider,
+  content: generated.content
+});
 
   return sendCreated(
     res,
