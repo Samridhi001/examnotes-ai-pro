@@ -1,3 +1,4 @@
+import { NotesExportActions } from "../components/NotesExportActions";
 import { MermaidDiagram } from "../components/MermaidDiagram";
 import { NotesChart } from "../components/NotesChart";
 import { useEffect, useState } from "react";
@@ -285,6 +286,8 @@ function NoteResult({ note }) {
             {note.classLevel} | {note.examType} | {note.generationProvider}
           </p>
         </div>
+
+        <NotesExportActions note={note} />
       </div>
 
       <section className="note-section">
