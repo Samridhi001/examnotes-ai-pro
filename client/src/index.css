@@ -48,3 +48,51 @@ body {
   border-radius: 10px;
   padding: 1rem;
 }
+
+.notes-export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.notes-export-actions button {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 0.65rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notes-export-actions button:hover {
+  border-color: #2563eb;
+  color: #1d4ed8;
+}
+
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  nav,
+  form,
+  .notes-export-actions,
+  .history-panel,
+  .sidebar {
+    display: none !important;
+  }
+
+  .notes-page,
+  .notes-output,
+  .generated-note,
+  .note-section {
+    box-shadow: none !important;
+    border-color: #d1d5db !important;
+  }
+
+  .generated-note {
+    width: 100%;
+  }
+}
