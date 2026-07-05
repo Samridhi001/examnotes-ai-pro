@@ -11,3 +11,40 @@
 body {
   margin: 0;
 }
+
+.diagram-view,
+.chart-view,
+.visual-fallback {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.diagram-view svg {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-view h3 {
+  margin: 0 0 1rem;
+  color: #0f172a;
+}
+
+.visual-fallback p {
+  margin: 0 0 0.75rem;
+  color: #b45309;
+  font-weight: 600;
+}
+
+.visual-fallback pre {
+  white-space: pre-wrap;
+  background: #0f172a;
+  color: #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem;
+}
