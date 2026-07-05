@@ -1,10 +1,12 @@
+import { MermaidDiagram } from "../components/MermaidDiagram";
+import { NotesChart } from "../components/NotesChart";
 import { useEffect, useState } from "react";
 import { getApiErrorMessage } from "../services/apiClient";
 import {
   deleteNote,
   generateNotes,
   getNoteById,
-  getNotesHistory
+  getNotesHistory,
 } from "../services/notesApi";
 
 const initialForm = {
@@ -14,14 +16,16 @@ const initialForm = {
   examType: "",
   revisionMode: false,
   includeDiagram: false,
-  includeChart: false
+  includeChart: false,
 };
 
 export function NotesPage() {
   const [form, setForm] = useState(initialForm);
   const [note, setNote] = useState(null);
   const [history, setHistory] = useState([]);
-  const [status, setStatus] = useState("Generate your first AI-ready study note.");
+  const [status, setStatus] = useState(
+    "Generate your first AI-ready study note.",
+  );
   const [error, setError] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
@@ -48,7 +52,7 @@ export function NotesPage() {
 
     setForm((currentForm) => ({
       ...currentForm,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
@@ -63,7 +67,7 @@ export function NotesPage() {
       const response = await generateNotes({
         ...form,
         classLevel: form.classLevel || "General",
-        examType: form.examType || "General"
+        examType: form.examType || "General",
       });
 
       setNote(response.data.note);
@@ -349,17 +353,15 @@ function NoteResult({ note }) {
 
       {content.diagram && (
         <section className="note-section">
-          <h3>Diagram Draft</h3>
-          <pre className="diagram-preview">{content.diagram}</pre>
+          <h3>Diagram</h3>
+          <MermaidDiagram chart={content.diagram} />
         </section>
       )}
 
       {content.charts.length > 0 && (
         <section className="note-section">
-          <h3>Chart Data</h3>
-          <pre className="diagram-preview">
-            {JSON.stringify(content.charts, null, 2)}
-          </pre>
+          <h3>Chart</h3>
+          <NotesChart charts={content.charts} />
         </section>
       )}
     </article>
