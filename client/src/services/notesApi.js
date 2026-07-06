@@ -19,3 +19,11 @@ export async function deleteNote(noteId) {
   const response = await apiClient.delete(`/notes/${noteId}`);
   return response.data;
 }
+
+export function deleteNote(noteId) {
+  return apiClient.delete(`/notes/${noteId}`);
+}
+
+export function toggleFavoriteNote(noteId) {
+  return apiClient.patch(`/notes/${noteId}/favorite`);
+}
