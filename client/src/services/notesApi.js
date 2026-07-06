@@ -20,10 +20,7 @@ export async function deleteNote(noteId) {
   return response.data;
 }
 
-export function deleteNote(noteId) {
-  return apiClient.delete(`/notes/${noteId}`);
-}
-
-export function toggleFavoriteNote(noteId) {
-  return apiClient.patch(`/notes/${noteId}/favorite`);
+export async function toggleFavoriteNote(noteId) {
+  const response = await apiClient.patch(`/notes/${noteId}/favorite`);
+  return response.data;
 }

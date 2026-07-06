@@ -8,6 +8,7 @@ import {
   generateNotes,
   getNoteById,
   getNotesHistory,
+  toggleFavoriteNote,
 } from "../services/notesApi";
 
 const initialForm = {
@@ -83,16 +84,56 @@ export function NotesPage() {
   }
 
   async function handleLoadNote(noteId) {
+  setError("");
+  setStatus("Loading saved note...");
+
+  try {
+    const response = await getNoteById(noteId);
+    setNote(response.data.note);
+    setStatus("Saved note loaded.");
+  } catch (requestError) {
+    setError(getApiErrorMessage(requestError));
+    setStatus("Could not load note.");
+  }
+}
+
+  async function handleDeleteNote(noteId) {
+
+  const confirmed = window.confirm("Delete this saved note?");
+
+  if (!confirmed) {
+    return;
+  }
+
+  setError("");
+  setStatus("Deleting note...");
+
+  try {
+    await deleteNote(noteId);
+
+    if (note?._id === noteId || note?.id === noteId) {
+      setNote(null);
+    }
+
+    await loadHistory();
+    setStatus("Note deleted successfully.");
+  } catch (requestError) {
+    setError(getApiErrorMessage(requestError));
+    setStatus("Could not delete note.");
+  }
+}
+
+  async function handleToggleFavorite(noteId) {
     setError("");
-    setStatus("Loading saved note...");
+    setStatus("Updating favorite...");
 
     try {
-      const response = await getNoteById(noteId);
-      setNote(response.data.note);
-      setStatus("Saved note loaded.");
+      await toggleFavoriteNote(noteId);
+      await loadHistory();
+      setStatus("Favorite updated.");
     } catch (requestError) {
       setError(getApiErrorMessage(requestError));
-      setStatus("Could not load note.");
+      setStatus("Could not update favorite.");
     }
   }
 
@@ -212,6 +253,7 @@ export function NotesPage() {
           isLoading={isHistoryLoading}
           onLoad={handleLoadNote}
           onDelete={handleDeleteNote}
+          onToggleFavorite={handleToggleFavorite}
         />
       </section>
 
@@ -223,7 +265,7 @@ export function NotesPage() {
   );
 }
 
-function HistoryPanel({ history, isLoading, onLoad, onDelete }) {
+function HistoryPanel({ history, isLoading, onLoad, onDelete, onToggleFavorite }) {
   return (
     <section className="history-panel">
       <div className="history-header">
@@ -248,6 +290,14 @@ function HistoryPanel({ history, isLoading, onLoad, onDelete }) {
                 <button type="button" onClick={() => onLoad(item._id)}>
                   Open
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => onToggleFavorite(item._id)}
+                >
+                  {item.isFavorite ? "Unfavorite" : "Favorite"}
+                </button>
+
                 <button
                   className="danger-button"
                   type="button"
