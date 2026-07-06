@@ -5,17 +5,17 @@ const flashcardSchema = new mongoose.Schema(
     front: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     back: {
       type: String,
       required: true,
-      trim: true
-    }
+      trim: true,
+    },
   },
   {
-    _id: false
-  }
+    _id: false,
+  },
 );
 
 const quizQuestionSchema = new mongoose.Schema(
@@ -23,17 +23,17 @@ const quizQuestionSchema = new mongoose.Schema(
     question: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     answer: {
       type: String,
       required: true,
-      trim: true
-    }
+      trim: true,
+    },
   },
   {
-    _id: false
-  }
+    _id: false,
+  },
 );
 
 const generatedContentSchema = new mongoose.Schema(
@@ -41,46 +41,46 @@ const generatedContentSchema = new mongoose.Schema(
     summary: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     keyPoints: {
       type: [String],
-      default: []
+      default: [],
     },
     revisionChecklist: {
       type: [String],
-      default: []
+      default: [],
     },
     importantQuestions: {
       short: {
         type: [String],
-        default: []
+        default: [],
       },
       long: {
         type: [String],
-        default: []
-      }
+        default: [],
+      },
     },
     flashcards: {
       type: [flashcardSchema],
-      default: []
+      default: [],
     },
     quiz: {
       type: [quizQuestionSchema],
-      default: []
+      default: [],
     },
     diagram: {
       type: String,
-      default: ""
+      default: "",
     },
     charts: {
       type: [mongoose.Schema.Types.Mixed],
-      default: []
-    }
+      default: [],
+    },
   },
   {
-    _id: false
-  }
+    _id: false,
+  },
 );
 
 const noteSchema = new mongoose.Schema(
@@ -89,59 +89,63 @@ const noteSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index: true
+      index: true,
     },
     topic: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 120
+      maxlength: 120,
     },
     sourceText: {
       type: String,
       trim: true,
-      default: ""
+      default: "",
     },
     classLevel: {
       type: String,
       trim: true,
-      default: "General"
+      default: "General",
     },
     examType: {
       type: String,
       trim: true,
-      default: "General"
+      default: "General",
     },
     revisionMode: {
       type: Boolean,
-      default: false
+      default: false,
     },
     includeDiagram: {
       type: Boolean,
-      default: false
+      default: false,
     },
     includeChart: {
       type: Boolean,
-      default: false
+      default: false,
     },
     generationProvider: {
       type: String,
       enum: ["fallback", "gemini"],
-      default: "fallback"
+      default: "fallback",
+    },
+    isFavorite: {
+      type: Boolean,
+      default: false,
     },
     content: {
       type: generatedContentSchema,
-      required: true
-    }
+      required: true,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 noteSchema.index({
   user: 1,
-  createdAt: -1
+  createdAt: -1,
 });
 
 export const Note = mongoose.model("Note", noteSchema);
