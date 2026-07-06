@@ -1,7 +1,7 @@
 import { Note } from "../models/Note.js";
 import { generateNotesContent } from "../services/notesGeneration.service.js";
 import { AppError } from "../utils/AppError.js";
-import { sendCreated, sendError, sendSuccess } from "../utils/apiResponse.js";
+import { sendCreated, sendSuccess } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { validateGenerateNotesInput } from "../validators/note.validator.js";
 
@@ -9,44 +9,46 @@ export const generateNotes = asyncHandler(async (req, res) => {
   const input = validateGenerateNotesInput(req.body);
   const generated = await generateNotesContent(input);
 
-const note = await Note.create({
-  user: req.userId,
-  ...input,
-  generationProvider: generated.provider,
-  content: generated.content
-});
+  const note = await Note.create({
+    user: req.userId,
+    ...input,
+    generationProvider: generated.provider,
+    content: generated.content,
+  });
 
   return sendCreated(
     res,
     {
-      note
+      note,
     },
-    "Notes generated successfully"
+    "Notes generated successfully",
   );
 });
 
 export const getNotesHistory = asyncHandler(async (req, res) => {
   const notes = await Note.find({
-    user: req.userId
+    user: req.userId,
   })
     .sort({
-      createdAt: -1
+      createdAt: -1,
     })
-    .select("topic classLevel examType revisionMode generationProvider createdAt updatedAt");
+   .select(
+  "topic classLevel examType revisionMode generationProvider isFavorite createdAt updatedAt",
+);
 
   return sendSuccess(
     res,
     {
-      notes
+      notes,
     },
-    "Notes history fetched successfully"
+    "Notes history fetched successfully",
   );
 });
 
 export const getNoteById = asyncHandler(async (req, res) => {
   const note = await Note.findOne({
     _id: req.params.noteId,
-    user: req.userId
+    user: req.userId,
   });
 
   if (!note) {
@@ -56,58 +58,43 @@ export const getNoteById = asyncHandler(async (req, res) => {
   return sendSuccess(
     res,
     {
-      note
+      note,
     },
-    "Note fetched successfully"
+    "Note fetched successfully",
   );
 });
 
 export const deleteNote = asyncHandler(async (req, res) => {
   const note = await Note.findOneAndDelete({
     _id: req.params.noteId,
-    user: req.userId
+    user: req.userId,
   });
 
   if (!note) {
     throw new AppError("Note not found", 404);
   }
 
-  return sendSuccess(
-    res,
-    {},
-    "Note deleted successfully"
-  );
+  return sendSuccess(res, {}, "Note deleted successfully");
 });
 
-export async function deleteNote(req, res) {
-  const note = await Note.findOneAndDelete({
-    _id: req.params.noteId,
-    user: req.user.id
-  });
-
-  if (!note) {
-    return sendError(res, "Note not found", 404);
-  }
-
-  return sendSuccess(res, "Note deleted successfully", {
-    noteId: req.params.noteId
-  });
-}
-
-export async function toggleFavoriteNote(req, res) {
+export const toggleFavoriteNote = asyncHandler(async (req, res) => {
   const note = await Note.findOne({
     _id: req.params.noteId,
-    user: req.user.id
+    user: req.userId,
   });
 
   if (!note) {
-    return sendError(res, "Note not found", 404);
+    throw new AppError("Note not found", 404);
   }
 
   note.isFavorite = !note.isFavorite;
   await note.save();
 
-  return sendSuccess(res, "Note favorite status updated", {
-    note
-  });
-}
+  return sendSuccess(
+    res,
+    {
+      note,
+    },
+    "Note favorite status updated",
+  );
+});

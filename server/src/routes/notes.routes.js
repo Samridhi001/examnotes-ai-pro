@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
   deleteNote,
-  generateNote,
+  generateNotes,
   getNoteById,
-  getNotes,
+  getNotesHistory,
   toggleFavoriteNote
 } from "../controllers/notes.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
