@@ -1,9 +1,10 @@
 import { Router } from "express";
 import {
   deleteNote,
-  generateNotes,
+  generateNote,
   getNoteById,
-  getNotesHistory
+  getNotes,
+  toggleFavoriteNote
 } from "../controllers/notes.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 
@@ -15,5 +16,7 @@ router.post("/generate", generateNotes);
 router.get("/", getNotesHistory);
 router.get("/:noteId", getNoteById);
 router.delete("/:noteId", deleteNote);
+router.patch("/:noteId/favorite", protect, toggleFavoriteNote);
+router.delete("/:noteId", protect, deleteNote);
 
 export default router;
