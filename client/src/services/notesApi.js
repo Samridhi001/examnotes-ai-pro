@@ -24,3 +24,8 @@ export async function toggleFavoriteNote(noteId) {
   const response = await apiClient.patch(`/notes/${noteId}/favorite`);
   return response.data;
 }
+
+export async function getNotesStats() {
+  const response = await apiClient.get("/notes/stats");
+  return response.data;
+}
