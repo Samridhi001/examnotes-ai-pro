@@ -98,3 +98,26 @@ export const toggleFavoriteNote = asyncHandler(async (req, res) => {
     "Note favorite status updated",
   );
 });
+
+export const getNotesStats = asyncHandler(async (req, res) => {
+  const [totalNotes, favoriteNotes, latestNotes] = await Promise.all([
+    Note.countDocuments({ user: req.userId }),
+    Note.countDocuments({ user: req.userId, isFavorite: true }),
+    Note.find({ user: req.userId })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select("topic classLevel examType generationProvider isFavorite createdAt"),
+  ]);
+
+  return sendSuccess(
+    res,
+    {
+      stats: {
+        totalNotes,
+        favoriteNotes,
+        latestNotes,
+      },
+    },
+    "Notes stats fetched successfully",
+  );
+});
