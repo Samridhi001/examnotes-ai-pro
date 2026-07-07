@@ -4,7 +4,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import { AuthPage } from "./pages/AuthPage.jsx";
 import "./App.css";
-
+import { DashboardPage } from "./pages/DashboardPage";
 
 function App() {
   const navigate = useNavigate();
@@ -64,6 +64,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/pricing" element={<PricingPage />} />
       </Routes>
     </div>
@@ -82,6 +90,9 @@ function HomePage() {
         </p>
 
         <div className="hero-actions">
+          <Link to="/dashboard" className="primary-action">
+            Go to Dashboard
+          </Link>
           <Link to="/notes" className="primary-action">
             Start Generating
           </Link>
@@ -109,7 +120,9 @@ function HistoryPage() {
   return (
     <main className="page-panel">
       <h1>History</h1>
-      <p>Saved notes history will appear here after notes generation is added.</p>
+      <p>
+        Saved notes history will appear here after notes generation is added.
+      </p>
     </main>
   );
 }
